@@ -39,7 +39,7 @@ app.use(session({
 }));
 
 const UserModel = require("./models/userModel.js");
-
+const { sendEmail } = require("./models/emailSender.js");
 
 app.get("/register", (req, res) => {
     const formData = req.session.formData || {};
@@ -95,6 +95,7 @@ app.post("/register", [
     let savedUser = await user.save();
     if (savedUser) {
         req.session.userEmail = savedUser.email;
+        req.session.firstName = savedUser.firstName;
         return res.redirect("/checkinghealth");
     } else {
         req.session.errors = {
@@ -124,13 +125,29 @@ app.get("/checkinghealth", (req, res) => {
     req.session.errors = null;
 });
 
-app.post("/checkinghealth", (req, res) => {
-    const userNumber = req.session.userNumber || "N/A";
+app.post("/checkinghealth", async (req, res) => {
+    const userEmail = req.session.userEmail || "N/A";
     const { heartRate, SpO2 } = req.body;
 
-    console.log(`Received data from ESP32: User Number = ${userNumber}, Heart Rate = ${heartRate}, SpO2 = ${SpO2}`);
+    let user = await UserModel.findOne({ email: userEmail });
+    if (!user) {
+        req.session.errors = {
+            form: {
+                msg: "There was an error retrieving your information. Please try again.",
+            },
+        };
+        return res.redirect("/register");
+    }
 
-    res.send("success");
+    user.heartRate = heartRate;
+    user.SpO2 = SpO2;
+
+    let savedUser = await user.save();
+
+    if (savedUser) {
+        sendEmail(userEmail, user.firstName, user.lastName, heartRate, SpO2);
+        return res.redirect("/register");
+    }
 });
 
 

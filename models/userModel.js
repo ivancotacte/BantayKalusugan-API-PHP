@@ -2,6 +2,18 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+    heartRate: {
+        type: Number,
+        required: false,
+    },
+    SpO2: {
+        type: Number,
+        required: false,
+    },
+    weight: {
+        type: Number,
+        required: false,
+    },
     firstName: {
         type: String,
         required: true,
