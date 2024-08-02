@@ -16,18 +16,21 @@ body {
 }
 
 .box-area {
-    width: 900px;
-    margin-top: 5px;
+    width: 930px;
+}
+
+.left-box {
+    background: #2d3139;
 }
 
 .left-box img {
-    width: 85%;
+    width: 200px;
     display: block;
     margin: 0 auto;
 }
 
 .left-box h2 {
-    font-size: 30px;
+    font-size: 28px;
     margin-top: 10px;
     text-align: center;
 }
@@ -41,11 +44,15 @@ body {
 }
 
 .right-box label {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .form-control {
     font-size: 16px; 
+}
+
+::placeholder {
+    font-size: 16px;
 }
 
 .rounded-4 {
@@ -67,6 +74,27 @@ footer {
     font-size: 14px;
 }
 
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1.5px solid #000;
+}
+
+.separator:not(:empty)::before {
+    margin-right: .20em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .20em;
+}
+
 @media only screen and (max-width: 768px) {
     .left-box {
         height: 100px;
@@ -75,18 +103,38 @@ footer {
     }
 
     .left-box img {
-        width: 55%;
+        width: 400px;
     }
 
     .right-box {
         padding: 20px;
     }
 
-    .right-box label {
+    .right-box h2 {
+        font-size: 24px;
+    }
+
+    .right-box p {
         font-size: 14px;
+    }
+
+    .right-box label {
+        font-size: 13px;
     }
 
     .form-control {
         font-size: 14px;
+    }
+
+    .separator {
+        font-size: 14px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+
+    .text-center small {
+        font-size: 12px;
     }
 }
